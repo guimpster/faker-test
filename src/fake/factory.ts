@@ -1,9 +1,9 @@
 import faker from 'faker';
 
 import { Async } from 'factory.ts';
-import { plainToClass } from 'class-transformer';
+import { plainToClass, classToClass } from 'class-transformer';
 
-import { User, Password, IPassword, IUser, IChild, Child } from '../model/user';
+import { User, Password, IPassword, IChild, Child } from '../model/user';
 import { ObjectID } from 'mongodb';
 
 export const passwordFactory = Async.makeFactory<IPassword>({
@@ -26,4 +26,4 @@ export const userFactory = Async.makeFactory<User>({
   age: Async.each(() => faker.random.number({ min: 10, max: 50 })),
   password: Async.each(() => passwordFactory.build()),
   children: Async.each(() => childFactory.buildList(faker.random.number({ min: 1, max: 3 })))
-}).transform((user: User) => plainToClass(User, user));
+}).transform((user: User) => classToClass(plainToClass(User, user)));

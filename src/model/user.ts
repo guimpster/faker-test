@@ -41,7 +41,7 @@ export class Child implements IChild {
 
 export class User implements IUser {
   @MongoIDType()
-  public id: MongoID
+  public _id: MongoID
   public firstName: string
   public lastName: string
   public fullName: string

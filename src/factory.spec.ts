@@ -1,7 +1,7 @@
 import { passwordFactory, userFactory } from './fake/factory';
 import { User, Password, IPassword, IUser, IChild, Child } from './model/user';
 
-import { plainToClass } from 'class-transformer';
+import { plainToClass, classToClass } from 'class-transformer';
 import { ObjectID } from 'mongodb';
 
 import util from 'util';
@@ -49,8 +49,9 @@ describe('Test factory.js usage', async () => {
     expect(user).toBeInstanceOf(User)
     expect(await userFactory.build()).toBeInstanceOf(User)
     expect(plainToClass(User, jsonUser)).toBeInstanceOf(User)
-    expect(plainToClass(User, jsonUser).id).toBeInstanceOf(ObjectID)
+    expect(plainToClass(User, jsonUser).id).toBeUndefined()
     expect((await userFactory.build()).id).toBeInstanceOf(ObjectID)
+    expect(classToClass(plainToClass(User, jsonUser)).id).toBeInstanceOf(ObjectID)
 
     expect(user.password).toBeInstanceOf(Password)
     expect((await userFactory.build()).password).toBeInstanceOf(Password)

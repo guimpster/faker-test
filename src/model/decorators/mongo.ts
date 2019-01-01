@@ -1,4 +1,4 @@
-import { Type, Transform } from 'class-transformer';
+import { Type, Transform, Expose } from 'class-transformer';
 import { ObjectID } from 'mongodb';
 
 /**
@@ -7,10 +7,12 @@ import { ObjectID } from 'mongodb';
 export const MongoIDType = () => {
   const transformFn = Transform((value: string) => new ObjectID(value), { toClassOnly: true });
   const typeFn = Type(() => String);
+  const exposeFn = Expose({ name: "id"});
 
   return function (target: any, key: string) {
     typeFn(target, key);
     transformFn(target, key);
+    exposeFn(target, key);
   }
 }
 
