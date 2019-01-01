@@ -25,12 +25,12 @@ describe('Test factory.js usage', async () => {
   });
 
   it('should return users as instances of User', async () => {
-    const password: IPassword = new Password();
+    const password: Password = new Password();
     password.id = new ObjectID();
     password.value = "234234";
     password.expire_at = new Date();
 
-    const child: IChild = new Child();
+    const child: Child = new Child();
     child.id = new ObjectID();
     child.name = "Jessica";
     child.age = 3;
@@ -44,14 +44,22 @@ describe('Test factory.js usage', async () => {
     user.password = password;
 
     const jsonPassword = { id: new ObjectID(), value: "234234", date: new Date() };
-    const jsonUser = { _id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
+    const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
+    const jsonUser2 = { _id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
 
     expect(user).toBeInstanceOf(User)
     expect(await userFactory.build()).toBeInstanceOf(User)
+    expect((await userFactory.build()).id).toBeInstanceOf(ObjectID)
+
     expect(plainToClass(User, jsonUser)).toBeInstanceOf(User)
     expect(plainToClass(User, jsonUser).id).toBeUndefined()
-    expect((await userFactory.build()).id).toBeInstanceOf(ObjectID)
     expect(classToClass(plainToClass(User, jsonUser)).id).toBeInstanceOf(ObjectID)
+    expect(classToClass(plainToClass(User, jsonUser)).id).toEqual(jsonUser.id)
+
+    expect(plainToClass(User, jsonUser2)).toBeInstanceOf(User)
+    expect(plainToClass(User, jsonUser2).id).toBeUndefined()
+    expect(classToClass(plainToClass(User, jsonUser2)).id).toBeInstanceOf(ObjectID)
+    // expect(classToClass(plainToClass(User, jsonUser2)).id).toEqual(jsonUser2._id)
 
     expect(user.password).toBeInstanceOf(Password)
     expect((await userFactory.build()).password).toBeInstanceOf(Password)
