@@ -1,12 +1,9 @@
 import { passwordFactory, userFactory } from './fake/factory';
-
 import { User, Password, IPassword, IUser, IChild, Child } from './model/user';
 
 import { plainToClass } from 'class-transformer';
-
-import util from 'util';
-
 import { ObjectID } from 'mongodb';
+import util from 'util';
 
 describe('Test factory.js usage', async () => {
   it('should return passwords as instances of Password', async () => {
@@ -32,6 +29,11 @@ describe('Test factory.js usage', async () => {
     password.value = "234234";
     password.expire_at = new Date();
 
+    const child: IChild = new Child();
+    child.id = new ObjectID();
+    child.name = "Jessica";
+    child.age = 3;
+
     const user: IUser = new User();
     user.id = new ObjectID();
     user.firstName = "José";
@@ -41,7 +43,7 @@ describe('Test factory.js usage', async () => {
     user.password = password;
 
     const jsonPassword = { id: new ObjectID(), value: "234234", date: new Date() };
-    const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword };
+    const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
 
     expect(user).toBeInstanceOf(User)
     expect(await userFactory.build()).toBeInstanceOf(User)
@@ -50,6 +52,10 @@ describe('Test factory.js usage', async () => {
     expect(user.password).toBeInstanceOf(Password)
     expect((await userFactory.build()).password).toBeInstanceOf(Password)
     expect(plainToClass(Password, jsonUser.password)).toBeInstanceOf(Password)
+    expect(plainToClass(Password, jsonUser.password).id).toBeInstanceOf(ObjectID)
+
     expect((await userFactory.build()).children[0]).toBeInstanceOf(Child)
+    expect(((await userFactory.build()).children[0]).id).toBeInstanceOf(ObjectID)
+    expect(plainToClass(User, jsonUser).children[0].id).toBeInstanceOf(ObjectID)
   });
 });
