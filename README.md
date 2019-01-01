@@ -1,3 +1,3 @@
 # Faker Test
 
-Simple project to demonstrate a certain coesion of faker.js + factory.ts + typescript
+Simple project to demonstrate if faker.js + factory.ts + typescript plays well together
