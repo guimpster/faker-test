@@ -1,4 +1,3 @@
-
 {
   "compilerOptions": {
     "noEmit": true,
@@ -18,7 +17,7 @@
     },
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest", "mongodb"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "src/**/dist"]
