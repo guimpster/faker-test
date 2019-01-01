@@ -3,6 +3,7 @@ import { User, Password, IPassword, IUser, IChild, Child } from './model/user';
 
 import { plainToClass } from 'class-transformer';
 import { ObjectID } from 'mongodb';
+
 import util from 'util';
 
 describe('Test factory.js usage', async () => {
@@ -34,8 +35,8 @@ describe('Test factory.js usage', async () => {
     child.name = "Jessica";
     child.age = 3;
 
-    const user: IUser = new User();
-    user.id = new ObjectID();
+    const user: User = new User();
+    user._id = new ObjectID();
     user.firstName = "José";
     user.lastName = "Silva";
     user.fullName = "José Silva";
@@ -43,11 +44,13 @@ describe('Test factory.js usage', async () => {
     user.password = password;
 
     const jsonPassword = { id: new ObjectID(), value: "234234", date: new Date() };
-    const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
+    const jsonUser = { _id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword, children: [child] };
 
     expect(user).toBeInstanceOf(User)
     expect(await userFactory.build()).toBeInstanceOf(User)
     expect(plainToClass(User, jsonUser)).toBeInstanceOf(User)
+    expect(plainToClass(User, jsonUser).id).toBeInstanceOf(ObjectID)
+    expect((await userFactory.build()).id).toBeInstanceOf(ObjectID)
 
     expect(user.password).toBeInstanceOf(Password)
     expect((await userFactory.build()).password).toBeInstanceOf(Password)

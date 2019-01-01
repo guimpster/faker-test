@@ -18,12 +18,12 @@ export const childFactory = Async.makeFactory<IChild>({
   age: Async.each(() => faker.random.number({ min: 0, max: 10 })),
 }).transform((child: IChild) => plainToClass(Child, child));
 
-export const userFactory = Async.makeFactory<IUser>({
-  id: Async.each(() => new ObjectID()),
+export const userFactory = Async.makeFactory<User>({
+  _id: Async.each(() => new ObjectID()),
   firstName: Async.each(() => faker.name.firstName()),
   lastName: Async.each(() => faker.name.lastName()),
   fullName: Async.each(() => faker.name.findName()),
   age: Async.each(() => faker.random.number({ min: 10, max: 50 })),
   password: Async.each(() => passwordFactory.build()),
   children: Async.each(() => childFactory.buildList(faker.random.number({ min: 1, max: 3 })))
-}).transform((user: IUser) => plainToClass(User, user));
+}).transform((user: User) => plainToClass(User, user));

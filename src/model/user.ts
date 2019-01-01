@@ -1,8 +1,7 @@
 import "reflect-metadata";
 
 import { ObjectID } from 'mongodb';
-import { Type, Transform } from 'class-transformer';
-import { plainToClass } from "class-transformer";
+import { Type, Transform, Expose, Exclude } from 'class-transformer';
 
 export type MongoID = typeof ObjectID
 
@@ -19,7 +18,6 @@ export interface IChild {
 }
 
 export interface IUser {
-  id: MongoID;
   firstName: string;
   lastName: string;
   fullName: string;
@@ -47,7 +45,9 @@ export class Child implements IChild {
 export class User implements IUser {
   @Type(() => String)
   @Transform((value: string) => new ObjectID(value), { toClassOnly: true })
-  public id: MongoID
+  @Expose({ name: "id" })
+  public _id: MongoID
+  
   public firstName: string
   public lastName: string
   public fullName: string
