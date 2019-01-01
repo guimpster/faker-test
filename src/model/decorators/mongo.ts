@@ -5,7 +5,7 @@ import { ObjectID } from 'mongodb';
  * Combines @Transform then @Type decorators.
  */
 export const MongoIDType = () => {
-  const transformFn = Transform((value: string) => new ObjectID(value), { toClassOnly: true });
+  const transformFn = Transform((value: string, obj: any) => new ObjectID(obj.id || obj._id), { toClassOnly: true });
   const typeFn = Type(() => String);
   const exposeFn = Expose({ name: "id"});
 

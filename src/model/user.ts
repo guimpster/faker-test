@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import { Type } from 'class-transformer';
+import { Type, Expose } from 'class-transformer';
 
 import { MongoIDType, MongoID } from './decorators/mongo'
 

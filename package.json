@@ -27,6 +27,7 @@
     "factory.ts": "^0.4.1",
     "faker": "^4.1.0",
     "mongodb": "^3.1.10",
+    "ramda": "^0.26.1",
     "reflect-metadata": "^0.1.12"
   }
 }

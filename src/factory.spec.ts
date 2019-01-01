@@ -55,11 +55,13 @@ describe('Test factory.js usage', async () => {
     expect(plainToClass(User, jsonUser).id).toBeUndefined()
     expect(classToClass(plainToClass(User, jsonUser)).id).toBeInstanceOf(ObjectID)
     expect(classToClass(plainToClass(User, jsonUser)).id).toEqual(jsonUser.id)
+    expect(classToClass(plainToClass(User, jsonUser))._id).toBeUndefined()
 
     expect(plainToClass(User, jsonUser2)).toBeInstanceOf(User)
     expect(plainToClass(User, jsonUser2).id).toBeUndefined()
     expect(classToClass(plainToClass(User, jsonUser2)).id).toBeInstanceOf(ObjectID)
-    // expect(classToClass(plainToClass(User, jsonUser2)).id).toEqual(jsonUser2._id)
+    expect(classToClass(plainToClass(User, jsonUser2)).id).toEqual(jsonUser2._id)
+    expect(classToClass(plainToClass(User, jsonUser2))._id).toBeUndefined()
 
     expect(user.password).toBeInstanceOf(Password)
     expect((await userFactory.build()).password).toBeInstanceOf(Password)
@@ -69,5 +71,9 @@ describe('Test factory.js usage', async () => {
     expect((await userFactory.build()).children[0]).toBeInstanceOf(Child)
     expect(((await userFactory.build()).children[0]).id).toBeInstanceOf(ObjectID)
     expect(plainToClass(User, jsonUser).children[0].id).toBeInstanceOf(ObjectID)
+  });
+
+  it('should order several users by id using ramda', async () => {
+    
   });
 });
