@@ -1,10 +1,12 @@
 import { passwordFactory, userFactory } from './fake/factory';
-import { User, Password, IPassword, IUser, IChild, Child } from './model/user';
+import { User, Password, IPassword, Child } from './model/user';
 
 import { plainToClass, classToClass } from 'class-transformer';
 import { ObjectID } from 'mongodb';
 
-import util from 'util';
+import * as R from 'ramda';
+
+// import util from 'util';
 
 describe('Test factory.js usage', async () => {
   it('should return passwords as instances of Password', async () => {
@@ -74,6 +76,21 @@ describe('Test factory.js usage', async () => {
   });
 
   it('should order several users by id using ramda', async () => {
-    
+    const sortById = R.sortWith([
+      R.ascend(R.prop('id'))
+    ]);
+    const sortByString = R.sort(R.comparator(R.lt))
+
+    const users = await userFactory.buildList(3);
+    const usersCopy = users.slice(0);
+
+    const ids = R.pluck('id', users);
+    const orderedIds = sortByString(ids);
+
+    const orderedUsers = sortById(users);
+    const orderedUsersIds = R.pluck('id', orderedUsers);
+
+    expect(orderedIds).toEqual(orderedUsersIds);
+    expect(users).toEqual(usersCopy);
   });
 });
