@@ -20,33 +20,36 @@ describe('Test factory.js usage', async () => {
     expect(password).toBeInstanceOf(Password)
     expect(await passwordFactory.build()).toBeInstanceOf(Password)
     expect(plainToClass(Password, jsonPassword)).toBeInstanceOf(Password)
+
+    expect(password.id).toBeInstanceOf(ObjectID)
+    expect(plainToClass(Password, jsonPassword).id).toBeInstanceOf(ObjectID)
     expect((await passwordFactory.build()).id).toBeInstanceOf(ObjectID)
   });
 
-  // it('should return users as instances of User', async () => {
-  //   const password: IPassword = new Password();
-  //   password.id = new ObjectID();
-  //   password.value = "234234";
-  //   password.expire_at = new Date();
+  it('should return users as instances of User', async () => {
+    const password: IPassword = new Password();
+    password.id = new ObjectID();
+    password.value = "234234";
+    password.expire_at = new Date();
 
-  //   const user: IUser = new User();
-  //   user.id = new ObjectID();
-  //   user.firstName = "José";
-  //   user.lastName = "Silva";
-  //   user.fullName = "José Silva";
-  //   user.age = 23;
-  //   user.password = password;
+    const user: IUser = new User();
+    user.id = new ObjectID();
+    user.firstName = "José";
+    user.lastName = "Silva";
+    user.fullName = "José Silva";
+    user.age = 23;
+    user.password = password;
 
-  //   const jsonPassword = { id: new ObjectID(), value: "234234", date: new Date() };
-  //   const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword };
+    const jsonPassword = { id: new ObjectID(), value: "234234", date: new Date() };
+    const jsonUser = { id: new ObjectID(), value: "234234", date: new Date(), password: jsonPassword };
 
-  //   expect(user).toBeInstanceOf(User)
-  //   expect(await userFactory.build()).toBeInstanceOf(User)
-  //   expect(plainToClass(User, jsonUser)).toBeInstanceOf(User)
+    expect(user).toBeInstanceOf(User)
+    expect(await userFactory.build()).toBeInstanceOf(User)
+    expect(plainToClass(User, jsonUser)).toBeInstanceOf(User)
 
-  //   expect(user.password).toBeInstanceOf(Password)
-  //   expect((await userFactory.build()).password).toBeInstanceOf(Password)
-  //   expect(plainToClass(Password, jsonUser.password)).toBeInstanceOf(Password)
-  //   expect((await userFactory.build()).children[0]).toBeInstanceOf(Child)
-  // });
+    expect(user.password).toBeInstanceOf(Password)
+    expect((await userFactory.build()).password).toBeInstanceOf(Password)
+    expect(plainToClass(Password, jsonUser.password)).toBeInstanceOf(Password)
+    expect((await userFactory.build()).children[0]).toBeInstanceOf(Child)
+  });
 });

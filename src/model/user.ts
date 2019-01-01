@@ -1,7 +1,7 @@
 import "reflect-metadata";
 
 import { ObjectID } from 'mongodb';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 
 export type MongoID = typeof ObjectID
 
@@ -29,6 +29,7 @@ export interface IChild {
 
 export class Password implements IPassword {
   @Type(() => String)
+  @Transform((value: string) => new ObjectID(value), { toClassOnly: true })
   public id: MongoID
   public value: string
   public expire_at: Date
@@ -36,6 +37,7 @@ export class Password implements IPassword {
 
 export class Child implements IChild {
   @Type(() => String)
+  @Transform((value: string) => new ObjectID(value), { toClassOnly: true })
   public id: MongoID
   public name: string
   public age: number
@@ -43,6 +45,7 @@ export class Child implements IChild {
 
 export class User implements IUser {
   @Type(() => String)
+  @Transform((value: string) => new ObjectID(value), { toClassOnly: true })
   public id: MongoID
   public firstName: string
   public lastName: string
